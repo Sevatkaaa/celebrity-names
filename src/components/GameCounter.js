@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {Col, Row, Button, Container} from "react-bootstrap";
+import {Container} from "react-bootstrap";
 import {browserHistory} from "react-router";
 
 import '../App.css';

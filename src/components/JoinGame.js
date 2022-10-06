@@ -4,7 +4,7 @@ import {browserHistory} from "react-router";
 
 import '../App.css';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faUserPlus, faMinusCircle} from "@fortawesome/free-solid-svg-icons";
+import {faUserPlus} from "@fortawesome/free-solid-svg-icons";
 import {NotificationContainer} from "react-notifications";
 
 export default class JoinGame extends Component {
@@ -25,10 +25,26 @@ export default class JoinGame extends Component {
         localStorage.setItem("game", JSON.stringify({
             id: "123qwe",
             teams: [
-                "Winners",
-                "Losers",
-                "Keks",
-                "Koks"
+                {
+                    name: "Winners",
+                    score: 10
+                },
+                {
+                    name: "Keks",
+                    score: 0
+                },
+                {
+                    name: "Koks",
+                    score: 0
+                },
+                {
+                    name: "Losers",
+                    score: 9
+                }
+            ],
+            names: [
+                "Taras Shevchenko",
+                "Andrii Shevchenko"
             ],
             timeInterval: 30,
             nameAmount: 10,

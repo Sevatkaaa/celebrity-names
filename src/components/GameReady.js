@@ -5,7 +5,7 @@ import {browserHistory} from "react-router";
 import '../App.css';
 import {NotificationContainer} from "react-notifications";
 
-export default class GameWait extends Component {
+export default class GameReady extends Component {
     constructor(props) {
         super(props);
         this.game = JSON.parse(localStorage.getItem("game"));
@@ -20,7 +20,7 @@ export default class GameWait extends Component {
 
     joinGame() {
         this.setState({isLoading: true});
-        this.redirect("/game")
+        this.redirect("/game-counter")
     }
 
     render() {
@@ -33,7 +33,7 @@ export default class GameWait extends Component {
                     <Container className="text-center">
                         <Row>
                             <Col xs={{span: 12}}>
-                                <div className="font-size-24 mt-100">Waiting for other players to join</div>
+                                <div className="font-size-24 mt-100">Total names remained: {_this.game.names.length}</div>
 
                             </Col>
                         </Row>
@@ -43,7 +43,7 @@ export default class GameWait extends Component {
                                     _this.joinGame()
                                 }}>
                                     <Button>
-                                        Start a game
+                                        Ready
                                     </Button>
                                 </div>
                             </Col>

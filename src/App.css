@@ -131,15 +131,8 @@ body {
   background-color: #70C1B3;
 }
 
-.team-preview {
-  padding: 15px 0 0 15px;
-}
-
-.team-preview:hover {
-  background-color: #f8f8f8;
-  box-shadow: 3px 3px 5px #eee;
-  border-radius: 10px;
-  padding: 15px 0 0 15px;
+.team-preview-score {
+  text-align: center;
 }
 
 .team-active {
@@ -149,9 +142,14 @@ body {
   padding: 15px 0 0 15px;
 }
 
+.user-preview-scoreboard {
+  padding: 15px 0 10px 15px;
+  border-bottom: 1px solid lightgray;
+}
+
 .user-preview {
   text-align: left;
-  padding: 18px 0 10px 15px;
+  padding: 15px 0 10px 15px;
   border-bottom: 1px solid lightgray;
 }
 
@@ -166,12 +164,6 @@ body {
   text-align: left;
   margin-top: 36px;
   padding: 0 0 12px 15px;
-}
-
-.user-preview:hover {
-  box-shadow: 3px 3px 5px 5px #dddddd;
-  padding: 18px 0 10px 15px;
-  border-radius: 10px;
 }
 
 .user-actions {
@@ -216,6 +208,10 @@ body {
 
 .cursor-pointer {
   cursor: pointer
+}
+
+.big-button {
+  padding: 10px 50px;
 }
 
 .main-action {

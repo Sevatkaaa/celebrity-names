@@ -28,6 +28,7 @@ export default class JoinTeam extends Component {
 
     joinGame() {
         if (this.validate()) {
+            localStorage.setItem("player", this.player.value);
             this.setState({isLoading: true});
             this.redirect("/game-names");
         }
@@ -36,7 +37,8 @@ export default class JoinTeam extends Component {
     validate() {
         let errors = this.state.errors;
 
-        if (!this.player.value) {
+        let value = this.player.value;
+        if (!value || !value.trim()) {
             errors.player = "Input your name";
         } else {
             errors.player = null;
@@ -55,7 +57,8 @@ export default class JoinTeam extends Component {
     validatePlayer() {
         let errors = this.state.errors;
 
-        if (!this.player.value) {
+        let value = this.player.value;
+        if (!value || !value.trim()) {
             errors.player = "Input your name";
         } else {
             errors.player = null;
@@ -123,7 +126,7 @@ export default class JoinTeam extends Component {
                                                     {
                                                         this.game.teams.map((team) => {
                                                             return (
-                                                                <option key={"team-option-" + team}>{team}</option>
+                                                                <option key={"team-option-" + team.name}>{team.name}</option>
                                                             )
                                                         })
                                                     }

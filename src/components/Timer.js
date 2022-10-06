@@ -14,8 +14,8 @@ export default function Timer({seconds}) {
     }, [counter]);
 
     return (
-        <div className="Timer">
-            <div>{counter}</div>
-        </div>
+        <>
+            {counter}
+        </>
     );
 }

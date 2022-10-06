@@ -74,10 +74,26 @@ export default class CreateNewGame extends Component {
             localStorage.setItem("game", JSON.stringify({
                 id: "123qwe",
                 teams: [
-                    "Winners",
-                    "Losers",
-                    "Keks",
-                    "Koks"
+                    {
+                        name: "Winners",
+                        score: 10
+                    },
+                    {
+                        name: "Keks",
+                        score: 0
+                    },
+                    {
+                        name: "Koks",
+                        score: 0
+                    },
+                    {
+                        name: "Losers",
+                        score: 9
+                    }
+                ],
+                names: [
+                    "Taras Shevchenko",
+                    "Andrii Shevchenko"
                 ],
                 timeInterval: 30,
                 nameAmount: 10,

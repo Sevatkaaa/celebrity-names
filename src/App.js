@@ -12,6 +12,8 @@ import GameCounter from "./components/GameCounter";
 import GameWord from "./components/GameWord";
 import GameNames from "./components/GameNames";
 import GameWait from "./components/GameWait";
+import Game from "./components/Game";
+import GameReady from "./components/GameReady";
 
 function App() {
   return (
@@ -26,6 +28,8 @@ function App() {
           <Route path="/game-word" component={GameWord}/>
           <Route path="/game-names" component={GameNames}/>
           <Route path="/game-wait" component={GameWait}/>
+          <Route path="/game" component={Game}/>
+          <Route path="/game-ready" component={GameReady}/>
         </Router>
       </div>
   );
