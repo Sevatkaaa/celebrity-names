@@ -27,9 +27,9 @@ export default class JoinTeam extends Component {
     }
 
     joinGame() {
-        console.log(this.state);
         if (this.validate()) {
             this.setState({isLoading: true});
+            this.redirect("/game-names");
         }
     }
 
@@ -123,7 +123,7 @@ export default class JoinTeam extends Component {
                                                     {
                                                         this.game.teams.map((team) => {
                                                             return (
-                                                                <option>{team}</option>
+                                                                <option key={"team-option-" + team}>{team}</option>
                                                             )
                                                         })
                                                     }

@@ -70,6 +70,7 @@ export default class CreateNewGame extends Component {
         if (this.validate()) {
             console.log("create new game");
             this.setState({isLoading: true});
+            this.redirect("/join-team")
         }
     }
 
@@ -208,12 +209,11 @@ export default class CreateNewGame extends Component {
                             <Col xs={{span: 12}}>
                                 <div className="font-size-24 mt-20">Teams</div>
                                 <Form className="mt-20">
-                                    <Row>
                                         {
                                             [...Array(this.state.teamAmount)].map((e, i) => {
                                                 return (
-                                                    <>
-                                                        <Col key={"teams-" + i} xs={{span: 11, offset: 0}}>
+                                                    <Row key={"teams-" + i} xs={{span: 12}}>
+                                                        <Col xs={{span: 10, offset: 1}}>
                                                             <FormGroup controlId={"teams-input-" + i}>
                                                                 <FormControl ref={ref => {
                                                                     this.teams[i] = ref
@@ -231,16 +231,17 @@ export default class CreateNewGame extends Component {
                                                         }}>
                                                             <FontAwesomeIcon icon={faMinusCircle}/>
                                                         </Col>
-                                                    </>
+                                                    </Row>
                                                 )
                                             })
                                         }
+                                    <Col>
                                         <Button className="center" onClick={function () {
                                             _this.incrementTeams()
                                         }}>
                                             <FontAwesomeIcon icon={faUserPlus}/> Add Team
                                         </Button>
-                                    </Row>
+                                    </Col>
                                 </Form>
                             </Col>
                         </Row>
