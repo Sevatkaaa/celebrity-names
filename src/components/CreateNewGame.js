@@ -70,6 +70,21 @@ export default class CreateNewGame extends Component {
         if (this.validate()) {
             console.log("create new game");
             this.setState({isLoading: true});
+            // TODO: request to get game by code
+            localStorage.setItem("game", JSON.stringify({
+                id: "123qwe",
+                teams: [
+                    "Winners",
+                    "Losers",
+                    "Keks",
+                    "Koks"
+                ],
+                timeInterval: 30,
+                nameAmount: 10,
+                status: "CREATED",
+                currentMove: null,
+                nextMove: null
+            }));
             this.redirect("/join-team")
         }
     }
