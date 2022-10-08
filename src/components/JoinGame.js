@@ -32,6 +32,7 @@ export default class JoinGame extends Component {
             })
             .catch(error => {
                 console.log("Error *** : " + error);
+                this.setState({isLoading: false});
             });
     }
 
