@@ -34,14 +34,13 @@ export default class GameWord extends Component {
     }
 
     next() {
+        this.names.push(this.game.names[this.state.nameIndex].id);
         if (this.state.nameIndex >= this.game.names.length - 1) {
-            this.names.push(this.game.names[this.state.nameIndex].id);
             this.setState({wordsEnded: true, isLoading: true});
             this.removeNames();
         } else if (this.state.finished) {
             this.removeNames()
         } else {
-            this.names.push(this.game.names[this.state.nameIndex].id);
             this.setState({nameIndex: this.state.nameIndex + 1});
         }
     }
