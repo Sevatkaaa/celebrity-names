@@ -4,6 +4,7 @@ import {browserHistory} from "react-router";
 
 import '../App.css';
 import {NotificationContainer} from "react-notifications";
+import {getGame} from "../api/getGame";
 
 export default class GameWait extends Component {
     constructor(props) {
@@ -20,7 +21,22 @@ export default class GameWait extends Component {
 
     joinGame() {
         this.setState({isLoading: true});
-        this.redirect("/game")
+        getGame(this.game.id)
+            .then((response) => {
+                if (response.status === 200) {
+                    localStorage.setItem("game", JSON.stringify(response.data));
+                    if (response.data.status === "PLAYING") {
+                        this.redirect("/game");
+                    } else {
+                        // TODO: add notification
+                    }
+                    this.setState({isLoading: false});
+                }
+            })
+            .catch(error => {
+                console.log("Error *** : " + error);
+                this.setState({isLoading: false});
+            });
     }
 
     render() {

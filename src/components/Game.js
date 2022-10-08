@@ -4,6 +4,7 @@ import {browserHistory} from "react-router";
 
 import '../App.css';
 import {NotificationContainer} from "react-notifications";
+import {getGame} from "../api/getGame";
 
 export default class Game extends Component {
     constructor(props) {
@@ -20,11 +21,51 @@ export default class Game extends Component {
 
     joinGame() {
         this.setState({isLoading: true});
-        this.redirect("/game-ready")
+        getGame(this.game.id)
+            .then((response) => {
+                if (response.status === 200) {
+                    localStorage.setItem("game", JSON.stringify(response.data));
+                    this.game = response.data;
+                    this.setState({isLoading: false});
+                    if (this.game.status !== "FINISHED") {
+                        if (this.game.currentPlayerId === Number(localStorage.getItem("playerId"))) {
+                            this.redirect("/game-ready")
+                        } else {
+                            // TODO: notification wait for your turn
+                        }
+                    } else {
+                        // TODO: notification game is up
+                    }
+                }
+            })
+            .catch(error => {
+                console.log("Error *** : " + error);
+                this.setState({isLoading: false});
+            });
+    }
+
+    newGame() {
+        this.redirect("/start");
     }
 
     refresh() {
-        // TODO: refresh game state
+        this.setState({isLoading: true});
+        getGame(this.game.id)
+            .then((response) => {
+                if (response.status === 200) {
+                    localStorage.setItem("game", JSON.stringify(response.data));
+                    this.game = response.data;
+                    this.setState({isLoading: false});
+                }
+            })
+            .catch(error => {
+                console.log("Error *** : " + error);
+                this.setState({isLoading: false});
+            });
+    }
+
+    componentDidMount() {
+        this.refresh();
     }
 
     render() {
@@ -67,10 +108,10 @@ export default class Game extends Component {
                                     <Row>
                                         <Col sm={{span: 4, offset: 4}}>
                                             <div className="cursor-pointer mt-20 mb-40" onClick={function () {
-                                                _this.joinGame()
+                                                _this.newGame()
                                             }}>
                                                 <Button>
-                                                    Go to main page
+                                                    Start new game
                                                 </Button>
                                             </div>
                                         </Col>

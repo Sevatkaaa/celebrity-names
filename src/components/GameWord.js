@@ -5,6 +5,7 @@ import {browserHistory} from "react-router";
 import '../App.css';
 import {NotificationContainer} from "react-notifications";
 import Timer from "./Timer";
+import {removeNames} from "../api/removeNames";
 
 export default class GameWord extends Component {
 
@@ -12,9 +13,11 @@ export default class GameWord extends Component {
         super(props);
         this.game = JSON.parse(localStorage.getItem("game"));
         this.names = [];
+        this.teamId = this.game.teams.filter((team) => team.players.map(p => p.id).includes(Number(localStorage.getItem("playerId"))))[0].id;
         this.state = {
             nameIndex: 0,
-            finished: false
+            finished: false,
+            wordsEnded: false
         }
         this.setTimeoutForGame();
     }
@@ -31,22 +34,38 @@ export default class GameWord extends Component {
     }
 
     next() {
-        if (this.state.finished) {
-            // TODO: add request to remove names and change score
-            this.redirect("/game");
+        if (this.state.nameIndex >= this.game.names.length - 1) {
+            this.names.push(this.game.names[this.state.nameIndex].id);
+            this.setState({wordsEnded: true, isLoading: true});
+            this.removeNames();
+        } else if (this.state.finished) {
+            this.removeNames()
         } else {
-            this.names.push(this.game.names[this.state.nameIndex]);
+            this.names.push(this.game.names[this.state.nameIndex].id);
             this.setState({nameIndex: this.state.nameIndex + 1});
         }
     }
 
     skip() {
-        if (this.state.finished) {
-            // TODO: add request to remove names and change score
-            this.redirect("/game");
+        if (this.state.nameIndex >= this.game.names.length - 1) {
+            this.setState({wordsEnded: true, isLoading: true});
+            this.removeNames();
+        } else if (this.state.finished) {
+            this.removeNames()
         } else {
             this.setState({nameIndex: this.state.nameIndex + 1});
         }
+    }
+
+    removeNames() {
+        console.log(this.names);
+        removeNames(this.game.id, this.names, this.teamId)
+            .then((response) => {
+                if (response.status === 200) {
+                    this.redirect("/game");
+                    this.setState({isLoading: false});
+                }
+            })
     }
 
     render() {
@@ -60,12 +79,16 @@ export default class GameWord extends Component {
                             this.state.finished ?
                                 <div>Time is up! Last word</div>
                                 :
-                                <div>Time left: <Timer seconds={30}/></div>
+                                <div>Time left: <Timer seconds={this.game.timeInterval}/></div>
                         }
                         <Row>
-                            <Col xs={{span: 10, offset: 1}} className={"mt-100 main-action"}>
-                                {_this.game.names[_this.state.nameIndex]}
-                            </Col>
+                            {
+                                this.state.wordsEnded ? null
+                                    :
+                                    <Col xs={{span: 10, offset: 1}} className={"mt-100 main-action"}>
+                                        {_this.game.names[_this.state.nameIndex].value}
+                                    </Col>
+                            }
                         </Row>
                         <Row className={"mt-100"}>
                             <Col xs={{span: 6}} onClick={function () {

@@ -4,6 +4,7 @@ import {browserHistory} from "react-router";
 
 import '../App.css';
 import {NotificationContainer} from "react-notifications";
+import {addNames} from "../api/addNames";
 
 export default class GameNames extends Component {
     constructor(props) {
@@ -25,8 +26,17 @@ export default class GameNames extends Component {
     joinGame() {
         if (this.validate()) {
             this.setState({isLoading: true});
-            // TODO: add request to submit names
-            this.redirect("/game-wait")
+            // console.log(this.game.id, this.names.map(n => n.value), localStorage.getItem("playerId"))
+            addNames(this.game.id, this.names.map(n => n.value), localStorage.getItem("playerId"))
+                .then((response) => {
+                    if (response.status === 200) {
+                        this.redirect("/game-wait");
+                    }
+                })
+                .catch(error => {
+                    this.setState({isLoading: false});
+                    console.log("Error *** : " + error);
+                });
         }
     }
 
@@ -50,6 +60,8 @@ export default class GameNames extends Component {
             let name = this.names[i].value
             if (!name || !name.trim()) {
                 errors.names[i] = "Name should not be empty"
+            } else if (name.length > 50) {
+                errors.names[i] = "Name is too long"
             } else {
                 errors.names[i] = null;
             }

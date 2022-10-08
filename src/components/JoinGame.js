@@ -6,6 +6,7 @@ import '../App.css';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faUserPlus} from "@fortawesome/free-solid-svg-icons";
 import {NotificationContainer} from "react-notifications";
+import {getGame} from "../api/getGame";
 
 export default class JoinGame extends Component {
     constructor(props) {
@@ -21,38 +22,17 @@ export default class JoinGame extends Component {
 
     joinGame() {
         this.setState({isLoading: true});
-        // TODO: request to get game by code
-        localStorage.setItem("game", JSON.stringify({
-            id: "123qwe",
-            teams: [
-                {
-                    name: "Winners",
-                    score: 10
-                },
-                {
-                    name: "Keks",
-                    score: 0
-                },
-                {
-                    name: "Koks",
-                    score: 0
-                },
-                {
-                    name: "Losers",
-                    score: 9
+        getGame(this.gameCode.value)
+            .then((response) => {
+                if (response.status === 200) {
+                    localStorage.setItem("game", JSON.stringify(response.data));
+                    this.redirect("/join-team");
+                    this.setState({isLoading: false});
                 }
-            ],
-            names: [
-                "Taras Shevchenko",
-                "Andrii Shevchenko"
-            ],
-            timeInterval: 30,
-            nameAmount: 10,
-            status: "CREATED",
-            currentMove: null,
-            nextMove: null
-        }));
-        this.redirect(`/join-team`)
+            })
+            .catch(error => {
+                console.log("Error *** : " + error);
+            });
     }
 
     render() {

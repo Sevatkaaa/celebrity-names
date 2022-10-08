@@ -4,6 +4,7 @@ import {browserHistory} from "react-router";
 
 import '../App.css';
 import {NotificationContainer} from "react-notifications";
+import {addPlayer} from "../api/addPlayer";
 
 export default class JoinTeam extends Component {
     constructor(props) {
@@ -28,9 +29,19 @@ export default class JoinTeam extends Component {
 
     joinGame() {
         if (this.validate()) {
-            localStorage.setItem("player", this.player.value);
             this.setState({isLoading: true});
-            this.redirect("/game-names");
+            addPlayer(this.game.id, this.state.team, this.player.value)
+                .then((response) => {
+                    if (response.status === 200) {
+                        localStorage.setItem("playerId", response.data.id)
+                        localStorage.setItem("player", this.player.value);
+                        this.redirect("/game-names")
+                    }
+                })
+                .catch(error => {
+                    this.setState({isLoading: false});
+                    console.log("Error *** : " + error);
+                });
         }
     }
 
@@ -40,6 +51,8 @@ export default class JoinTeam extends Component {
         let value = this.player.value;
         if (!value || !value.trim()) {
             errors.player = "Input your name";
+        } else if (value.length > 20) {
+            errors.player = "Name is too long";
         } else {
             errors.player = null;
         }
@@ -126,7 +139,7 @@ export default class JoinTeam extends Component {
                                                     {
                                                         this.game.teams.map((team) => {
                                                             return (
-                                                                <option key={"team-option-" + team.name}>{team.name}</option>
+                                                                <option key={"team-option-" + team.name} value={team.id}>{team.name}</option>
                                                             )
                                                         })
                                                     }
